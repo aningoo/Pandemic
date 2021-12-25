@@ -5,6 +5,12 @@ import java.util.function.Predicate;
 
 public class Main {
 
+    //TODO
+    // end game stats
+    // stats options
+    // game setup infection
+    // eventcards
+
     Random r = new Random();
     Scanner scanner = new Scanner(System.in);
 
