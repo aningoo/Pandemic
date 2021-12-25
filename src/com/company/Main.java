@@ -17,6 +17,17 @@ public class Main {
     private int epidemicCardsDrawn = 0;
     private int infectionRate = 2;
 
+    public static final String TEXT_RESET = "\u001B[0m";
+    public static final String TEXT_BLACK = "\u001B[30m";
+    public static final String TEXT_RED = "\u001B[31m";
+    public static final String TEXT_GREEN = "\u001B[32m";
+    public static final String TEXT_YELLOW = "\u001B[33m";
+    public static final String TEXT_BLUE = "\u001B[34m";
+    public static final String TEXT_PURPLE = "\u001B[35m";
+    public static final String TEXT_CYAN = "\u001B[36m";
+    public static final String TEXT_WHITE = "\u001B[37m";
+
+
     ArrayList<InfectionCards> initPile = new ArrayList<>(Arrays.asList(InfectionCards.values()));
     ArrayList<InfectionCards> discardPile = new ArrayList<>();
     ArrayList<InfectionCards> activePile = new ArrayList<>();
@@ -53,16 +64,18 @@ public class Main {
         float pileSize = currentPile.size();
         float oddPerCard =  1 / pileSize;
 
-        float numberOfYellowCards = currentPile.stream().filter(infectionCards -> infectionCards.color.equals("YELLOW")).count();
-        float numberOfRedCards = currentPile.stream().filter(infectionCards -> infectionCards.color.equals("RED")).count();
-        float numberOfBlackCards = currentPile.stream().filter(infectionCards -> infectionCards.color.equals("BLACK")).count();
-        float numberOfBlueCards = currentPile.stream().filter(infectionCards -> infectionCards.color.equals("BLUE")).count();
+        float numberOfYellowCards = currentPile.stream().filter(infectionCards -> infectionCards.color.equals(Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET)).count();
+        float numberOfRedCards = currentPile.stream().filter(infectionCards -> infectionCards.color.equals(Main.TEXT_RED + "RED" + Main.TEXT_RESET)).count();
+        float numberOfBlackCards = currentPile.stream().filter(infectionCards -> infectionCards.color.equals(Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET)).count();
+        float numberOfBlueCards = currentPile.stream().filter(infectionCards -> infectionCards.color.equals(Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET)).count();
 
-        System.out.printf("Probability yellow: %.2f%% \n", numberOfYellowCards / pileSize * 100);
-        System.out.printf("Probability red: %.2f%% \n", numberOfRedCards / pileSize * 100);
-        System.out.printf("Probability black: %.2f%% \n", numberOfBlackCards / pileSize * 100);
-        System.out.printf("Probability blue: %.2f%% \n", numberOfBlueCards / pileSize * 100);
-        System.out.printf("Probability specific card: %.2f%% \n", oddPerCard * 100);
+        System.out.println("");
+        System.out.printf(TEXT_YELLOW + "Probability yellow: %.2f%%" + TEXT_RESET + " \n", numberOfYellowCards / pileSize * 100);
+        System.out.printf(TEXT_RED + "Probability red: %.2f%%" + TEXT_RESET +" \n", numberOfRedCards / pileSize * 100);
+        System.out.printf(TEXT_BLACK + "Probability black: %.2f%%" + TEXT_RESET +" \n", numberOfBlackCards / pileSize * 100);
+        System.out.printf(TEXT_BLUE + "Probability blue: %.2f%%" + TEXT_RESET +" \n", numberOfBlueCards / pileSize * 100);
+        System.out.println("");
+//        System.out.printf("Probability specific card: %.2f%% \n", oddPerCard * 100);
     }
 
     private void epidemic(){
