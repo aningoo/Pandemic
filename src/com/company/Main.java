@@ -1,6 +1,12 @@
 package com.company;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
@@ -16,6 +22,7 @@ public class Main {
     private int epidemicCardsDrawn = 0;
     private int infectionRate = 2;
     private int turnCounter = 1;
+    private boolean activeGame = true;
 
     public static final String TEXT_RESET = "\u001B[0m";
     public static final String TEXT_BLACK = "\u001B[30m";
@@ -32,6 +39,10 @@ public class Main {
     ArrayList<InfectionCards> discardPile = new ArrayList<>();
     ArrayList<InfectionCards> calculatePile;
     InfectionCards cursor;
+    LocalDateTime startTime = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter titleFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmmss");
+
 
     public static void main(String[] args) throws InterruptedException {
         Main main = new Main();
@@ -46,8 +57,13 @@ public class Main {
 
         }
 
-        while(true) {
-            System.out.println("Turn: " + main.turnCounter + '\t' + '\t' + "1: EPIDEMIC" + '\t' + '\t' + " 2: DRAW"  + '\t' + '\t' + "Current infection rate: " + main.infectionRate);
+        while(main.activeGame) {
+            System.out.println("Turn: " + main.turnCounter +
+                    '\t' + '\t' + "1: EPIDEMIC" +
+                    '\t' + '\t' + " 2: DRAW"  +
+                    '\t' + '\t' + " 3: DISCARD PILE STATS"  +
+                    '\t' + '\t' + " 99: END"  +
+                    '\t' + '\t' + "Current infection rate: " + main.infectionRate);
             String input = main.scanner.nextLine();
 
             // draw logica
@@ -59,13 +75,19 @@ public class Main {
                     for (int drawn = 0; drawn < main.infectionRate; drawn++) {
                         main.draw();
                     }
+                    System.out.println("##### END OF TURN: " + main.turnCounter + " #####");
+                    main.turnCounter++;
                     break;
+                case "3":
+                    main.stats();
+                    break;
+                case "99":
+                    main.end();
+                    main.activeGame=false;
             }
 
             main.calculate();
 
-            System.out.println("##### END OF TURN: " + main.turnCounter + " #####");
-            main.turnCounter++;
         }
     }
 
@@ -107,6 +129,7 @@ public class Main {
             infectionRate ++;
         }
         InfectionCards retrievedCard = infectionDeck.get(infectionDeck.size()-1);
+        retrievedCard.count.getAndIncrement();
         infectionDeck.remove(retrievedCard);
         System.out.println("3 CUBES ON: " + retrievedCard);
         discardPile.add(retrievedCard);
@@ -122,6 +145,7 @@ public class Main {
     private void draw() throws InterruptedException {
         scanner.nextLine();
         InfectionCards retrievedCard = infectionDeck.get(0);
+        retrievedCard.count.getAndIncrement();
         if (retrievedCard.equals(cursor)){
             cursor= null;
         }
@@ -130,4 +154,53 @@ public class Main {
         infectionDeck.remove(retrievedCard);
     }
 
+    private void stats(){
+        System.out.println("##### PRINTING STATS #####");
+        for (InfectionCards infectionCards : infectionDeck) {
+            if (infectionCards.count.get() > 0){
+                System.out.println(infectionCards);
+            }
+        }
+        for (InfectionCards infectionCards : discardPile) {
+            if (infectionCards.count.get() > 0){
+                System.out.println(infectionCards);
+            }
+        }
+        System.out.println("##### END OF PRINTING STATS #####");
+    }
+
+    private void end(){
+        System.out.println("ENDING GAME");
+
+        int totalInfectionCityCardsDrawn = 0;
+        int totalCount = 0;
+
+        try (PrintWriter pw = new PrintWriter("endgame_stats-" + startTime.format(titleFormatter) + ".txt")) {
+            pw.println("START TIME: \t \t " + startTime.format(formatter));
+            pw.println("END TIME: \t \t \t " + LocalDateTime.now().format(formatter));
+            pw.println("");
+            pw.println("NUMBER OF TURNS: \t \t \t " + turnCounter);
+            pw.println("EPIDEMICS DRAWN: \t \t \t " + epidemicCardsDrawn);
+            pw.println("");
+            for (InfectionCards infectionCards : infectionDeck) {
+                if (infectionCards.count.get() > 0){
+                    pw.println(infectionCards.toStringClean());
+                    totalInfectionCityCardsDrawn++;
+                    totalCount = totalCount + infectionCards.count.get();
+                }
+            }
+            for (InfectionCards infectionCards : discardPile) {
+                if (infectionCards.count.get() > 0){
+                    pw.println(infectionCards.toStringClean());
+                    totalInfectionCityCardsDrawn++;
+                    totalCount = totalCount + infectionCards.count.get();
+                }
+            }
+            pw.println("");
+            pw.println("Size: \t \t \t \t \t " + totalInfectionCityCardsDrawn);
+            pw.println("Sum of count: \t \t \t " + totalCount);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
