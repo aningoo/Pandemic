@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
 
     //TODO
-    // end game stats
-    // stats options
-    // game setup infection
+    // current turn's character
+    // cards drawn in between epidemics
+    // revert
     // eventcards
 
     Random r = new Random();
@@ -39,7 +39,7 @@ public class Main {
     ArrayList<InfectionCards> discardPile = new ArrayList<>();
     ArrayList<InfectionCards> calculatePile;
     InfectionCards cursor;
-    LocalDateTime startTime = LocalDateTime.now();
+    LocalDateTime startTime;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     DateTimeFormatter titleFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmmss");
 
@@ -47,7 +47,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Main main = new Main();
         Collections.shuffle(main.infectionDeck);
-        System.out.println("### START PANDEMIC HELPER ###");
+        System.out.println("### SETUP PHASE PANDEMIC ###");
 
         for (int cubes = 3; cubes > 0; cubes--) {
             System.out.println(cubes + " cubes on: ");
@@ -57,10 +57,14 @@ public class Main {
 
         }
 
+        System.out.println("### PRESS ANY KEY TO START GAME ###");
+        main.scanner.nextLine();
+        main.startTime = LocalDateTime.now();
+
         while(main.activeGame) {
             System.out.println("Turn: " + main.turnCounter +
-                    '\t' + '\t' + "1: EPIDEMIC" +
-                    '\t' + '\t' + " 2: DRAW"  +
+                    '\t' + '\t' + "EP: EPIDEMIC" +
+                    '\t' + '\t' + " D: DRAW"  +
                     '\t' + '\t' + " 3: DISCARD PILE STATS"  +
                     '\t' + '\t' + " 99: END"  +
                     '\t' + '\t' + "Current infection rate: " + main.infectionRate);
@@ -68,10 +72,10 @@ public class Main {
 
             // draw logica
             switch(input) {
-                case "1":
+                case "EP":
                     main.epidemic();
                     break;
-                case "2":
+                case "D":
                     for (int drawn = 0; drawn < main.infectionRate; drawn++) {
                         main.draw();
                     }
@@ -156,11 +160,6 @@ public class Main {
 
     private void stats(){
         System.out.println("##### PRINTING STATS #####");
-        for (InfectionCards infectionCards : infectionDeck) {
-            if (infectionCards.count.get() > 0){
-                System.out.println(infectionCards);
-            }
-        }
         for (InfectionCards infectionCards : discardPile) {
             if (infectionCards.count.get() > 0){
                 System.out.println(infectionCards);
@@ -182,20 +181,29 @@ public class Main {
             pw.println("NUMBER OF TURNS: \t \t \t " + turnCounter);
             pw.println("EPIDEMICS DRAWN: \t \t \t " + epidemicCardsDrawn);
             pw.println("");
-            for (InfectionCards infectionCards : infectionDeck) {
-                if (infectionCards.count.get() > 0){
-                    pw.println(infectionCards.toStringClean());
-                    totalInfectionCityCardsDrawn++;
-                    totalCount = totalCount + infectionCards.count.get();
+
+            for (InfectionCards discardedCard : discardPile) {
+                infectionDeck.add(0, discardedCard);
+            }
+
+            for(int count = 20; count > 0; count--){
+                for (InfectionCards infectionCards : infectionDeck) {
+                    if (infectionCards.count.get() == count){
+                        pw.println(infectionCards.toStringClean());
+                        totalInfectionCityCardsDrawn++;
+                        totalCount = totalCount + infectionCards.count.get();
+                    }
                 }
             }
-            for (InfectionCards infectionCards : discardPile) {
-                if (infectionCards.count.get() > 0){
-                    pw.println(infectionCards.toStringClean());
-                    totalInfectionCityCardsDrawn++;
-                    totalCount = totalCount + infectionCards.count.get();
-                }
-            }
+
+//            for (InfectionCards infectionCards : infectionDeck) {
+//                if (infectionCards.count.get() > 0){
+//                    pw.println(infectionCards.toStringClean());
+//                    totalInfectionCityCardsDrawn++;
+//                    totalCount = totalCount + infectionCards.count.get();
+//                }
+//            }
+
             pw.println("");
             pw.println("Size: \t \t \t \t \t " + totalInfectionCityCardsDrawn);
             pw.println("Sum of count: \t \t \t " + totalCount);
