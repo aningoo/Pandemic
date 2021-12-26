@@ -16,6 +16,7 @@ public class Main {
 
     private int epidemicCardsDrawn = 0;
     private int infectionRate = 2;
+    private int turnCounter = 1;
 
     public static final String TEXT_RESET = "\u001B[0m";
     public static final String TEXT_BLACK = "\u001B[30m";
@@ -35,8 +36,17 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Main main = new Main();
         System.out.println("### START PANDEMIC HELPER ###");
+
+        for (int cubes = 3; cubes > 0; cubes--) {
+            System.out.println(cubes + " cubes on: ");
+            for (int drawn =0; drawn < 3; drawn++) {
+                main.draw();
+            }
+
+        }
+
         while(true) {
-            System.out.println("1: EPIDEMIC" + '\t' + '\t' + " 2: DRAW"  + '\t' + '\t' + "Current infection rate: " + main.infectionRate);
+            System.out.println("Turn: " + main.turnCounter + '\t' + '\t' + "1: EPIDEMIC" + '\t' + '\t' + " 2: DRAW"  + '\t' + '\t' + "Current infection rate: " + main.infectionRate);
             String input = main.scanner.nextLine();
 
             // draw logica
@@ -57,6 +67,8 @@ public class Main {
                 main.calculate(main.initPile);
             }
 
+            System.out.println("##### END OF TURN: " + main.turnCounter + " #####");
+            main.turnCounter++;
         }
     }
 
