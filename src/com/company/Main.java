@@ -32,6 +32,7 @@ public class Main {
     ArrayList<InfectionCards> initPile = new ArrayList<>(Arrays.asList(InfectionCards.values()));
     ArrayList<InfectionCards> discardPile = new ArrayList<>();
     ArrayList<InfectionCards> activePile = new ArrayList<>();
+    ArrayList<InfectionCards> tempPile = new ArrayList<>();
 
     public static void main(String[] args) throws InterruptedException {
         Main main = new Main();
@@ -59,6 +60,8 @@ public class Main {
                         main.draw();
                     }
                     break;
+                case "3":
+                    main.viewPile();
             }
 
             if (!main.activePile.isEmpty()){
@@ -102,24 +105,46 @@ public class Main {
         initPile.remove(retrievedCard);
         System.out.println("3 CUBES ON: " + retrievedCard);
         discardPile.add(retrievedCard);
+        tempPile.addAll(activePile);
+        activePile.clear();
         activePile.addAll(discardPile);
         discardPile.clear();
     }
 
     private void draw() throws InterruptedException {
         scanner.nextLine();
-        if (activePile.isEmpty()) {
-            int x = r.nextInt(initPile.size());
-            InfectionCards retrievedCard = initPile.get(x);
-            System.out.println("Card drawn: " + retrievedCard);
-            discardPile.add(retrievedCard);
-            initPile.remove(retrievedCard);
-    } else {
+        if (!activePile.isEmpty()) {
+            // draw from active pile
             int x = r.nextInt(activePile.size());
             InfectionCards retrievedCard = activePile.get(x);
             System.out.println("Card drawn: " + retrievedCard);
+            discardPile.add(retrievedCard);
+            activePile.remove(retrievedCard);
+    } else if (!tempPile.isEmpty()){
+            // draw from temp pile
+            int x = r.nextInt(tempPile.size());
+            InfectionCards retrievedCard = tempPile.get(x);
+            System.out.println("Card drawn: " + retrievedCard);
+            discardPile.add(retrievedCard);
+            tempPile.remove(retrievedCard);
+        } else {
+            // draw from init pile
+            int x = r.nextInt(initPile.size());
+            InfectionCards retrievedCard = initPile.get(x);
+            System.out.println("Card drawn: " + retrievedCard);
 
             discardPile.add(retrievedCard);
-            activePile.remove(retrievedCard);        }
+            initPile.remove(retrievedCard);        }
+    }
+
+    private void viewPile(){
+        System.out.println("discard");
+        discardPile.forEach(System.out::println);
+
+        System.out.println("active");
+        activePile.forEach(System.out::println);
+
+        System.out.println("temp");
+        tempPile.forEach(System.out::println);
     }
 }
