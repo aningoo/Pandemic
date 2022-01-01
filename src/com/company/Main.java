@@ -22,17 +22,8 @@ public class Main {
     private int epidemicCardsDrawn = 0;
     private int infectionRate = 2;
     private int turnCounter = 1;
+    public static int outbreakCounter = 0;
     private boolean activeGame = true;
-
-    public static final String TEXT_RESET = "\u001B[0m";
-    public static final String TEXT_BLACK = "\u001B[30m";
-    public static final String TEXT_RED = "\u001B[31m";
-    public static final String TEXT_GREEN = "\u001B[32m";
-    public static final String TEXT_YELLOW = "\u001B[33m";
-    public static final String TEXT_BLUE = "\u001B[34m";
-    public static final String TEXT_PURPLE = "\u001B[35m";
-    public static final String TEXT_CYAN = "\u001B[36m";
-    public static final String TEXT_WHITE = "\u001B[37m";
 
 
     ArrayList<InfectionCards> infectionDeck = new ArrayList<>(Arrays.asList(InfectionCards.values()));
@@ -49,17 +40,14 @@ public class Main {
         InitNeighbours init = new InitNeighbours();
         init.init();
 
-        InfectionCards.BAG.neighbours.get(0).count.getAndIncrement();
-        InfectionCards.MUM.neighbours.get(0).count.getAndIncrement();
-        System.out.println(InfectionCards.KAR.count);
-
         Collections.shuffle(main.infectionDeck);
         System.out.println("### SETUP PHASE PANDEMIC ###");
 
         for (int cubes = 3; cubes > 0; cubes--) {
             System.out.println(cubes + " cubes on: ");
             for (int drawn =0; drawn < 3; drawn++) {
-                main.draw();
+                InfectionCards drawnCard = main.draw();
+                drawnCard.addCube(cubes, drawnCard.color);
             }
 
         }
@@ -69,27 +57,66 @@ public class Main {
         main.startTime = LocalDateTime.now();
 
         while(main.activeGame) {
+            main.analysis();
+
+            //remove outbreak shield
+            main.infectionDeck.forEach(infectionCards -> infectionCards.outbreakShield = false);
+            main.discardPile.forEach(discardedCards -> discardedCards.outbreakShield = false);
+
+            if (outbreakCounter >= 8) {
+                main.activeGame = false;
+                main.end();
+                break;
+            }
+
             System.out.println("Turn: " + main.turnCounter +
-                    '\t' + '\t' + "EP: EPIDEMIC" +
-                    '\t' + '\t' + " D: DRAW"  +
-                    '\t' + '\t' + " 3: DISCARD PILE STATS"  +
+                    '\t' + '\t' + " p: EPIDEMIC" +
+                    '\t' + '\t' + " d: DRAW"  +
+                    '\t' + '\t' + " r: REMOVE 1 CUBE"  +
+                    '\t' + '\t' + " 1: DISCARD PILE STATS"  +
                     '\t' + '\t' + " 99: END"  +
                     '\t' + '\t' + "Current infection rate: " + main.infectionRate);
             String input = main.scanner.nextLine();
-
-            // draw logica
+            //disable outbreak shield after turn finish
             switch(input) {
-                case "EP":
+                case "debug_add":
+                    System.out.println("Enter city code:");
+                    String cityCode = main.scanner.nextLine();
+                    InfectionCards drawnCard = InfectionCards.valueOf(cityCode.toUpperCase());
+                    drawnCard.addCube(1, drawnCard.color);
+                    break;
+                case "r":
+                    try {
+                        System.out.println("Enter city code:");
+                        String cityCode2 = main.scanner.nextLine();
+                        System.out.println("Enter color of cube:");
+                        String color = main.scanner.nextLine();
+
+                        InfectionCards retrieved=InfectionCards.valueOf(cityCode2.toUpperCase());
+                        if (color.isBlank()){
+                            retrieved.removeCube(1, retrieved.color);
+                        } else {
+                            String retrievedColor = Constants.getColor(color);
+                            retrieved.removeCube(1, retrievedColor);
+                        }
+
+                    } catch (IllegalArgumentException e){
+                        System.err.println("INVALID INPUT");
+                    }
+                    //todo text cube removed
+                    break;
+                case "p":
                     main.epidemic();
                     break;
-                case "D":
+                case "d":
                     for (int drawn = 0; drawn < main.infectionRate; drawn++) {
-                        main.draw();
+                        InfectionCards drawnCard1 = main.draw();
+                        drawnCard1.addCube(1, drawnCard1.color);
                     }
                     System.out.println("##### END OF TURN: " + main.turnCounter + " #####");
                     main.turnCounter++;
                     break;
-                case "3":
+                case "1":
                     main.stats();
                     break;
                 case "99":
@@ -100,6 +127,11 @@ public class Main {
             main.calculate();
 
         }
+    }
+
+    private void analysis() {
+
+
     }
 
     private void calculate(){
@@ -117,16 +149,16 @@ public class Main {
         float pileSize = calculatePile.size();
         float oddPerCard =  1 / pileSize;
 
-        float numberOfYellowCards = calculatePile.stream().filter(infectionCards -> infectionCards.color.equals(Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET)).count();
-        float numberOfRedCards = calculatePile.stream().filter(infectionCards -> infectionCards.color.equals(Main.TEXT_RED + "RED" + Main.TEXT_RESET)).count();
-        float numberOfBlackCards = calculatePile.stream().filter(infectionCards -> infectionCards.color.equals(Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET)).count();
-        float numberOfBlueCards = calculatePile.stream().filter(infectionCards -> infectionCards.color.equals(Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET)).count();
+        float numberOfYellowCards = calculatePile.stream().filter(infectionCards -> infectionCards.color.equals(Constants.YELLOW)).count();
+        float numberOfRedCards = calculatePile.stream().filter(infectionCards -> infectionCards.color.equals(Constants.RED)).count();
+        float numberOfBlackCards = calculatePile.stream().filter(infectionCards -> infectionCards.color.equals(Constants.BLACK)).count();
+        float numberOfBlueCards = calculatePile.stream().filter(infectionCards -> infectionCards.color.equals(Constants.BLUE)).count();
 
         System.out.println("");
-        System.out.printf(TEXT_YELLOW + "Probability yellow: %.2f%%" + TEXT_RESET + " \n", numberOfYellowCards / pileSize * 100);
-        System.out.printf(TEXT_RED + "Probability red: %.2f%%" + TEXT_RESET +" \n", numberOfRedCards / pileSize * 100);
-        System.out.printf(TEXT_BLACK + "Probability black: %.2f%%" + TEXT_RESET +" \n", numberOfBlackCards / pileSize * 100);
-        System.out.printf(TEXT_BLUE + "Probability blue: %.2f%%" + TEXT_RESET +" \n", numberOfBlueCards / pileSize * 100);
+        System.out.printf(Constants.TEXT_YELLOW + "Probability yellow: %.2f%%" + Constants.TEXT_RESET + " \n", numberOfYellowCards / pileSize * 100);
+        System.out.printf(Constants.TEXT_RED + "Probability red: %.2f%%" + Constants.TEXT_RESET +" \n", numberOfRedCards / pileSize * 100);
+        System.out.printf(Constants.TEXT_BLACK + "Probability black: %.2f%%" + Constants.TEXT_RESET +" \n", numberOfBlackCards / pileSize * 100);
+        System.out.printf(Constants.TEXT_BLUE + "Probability blue: %.2f%%" + Constants.TEXT_RESET +" \n", numberOfBlueCards / pileSize * 100);
         System.out.println("");
 //        System.out.printf("Probability specific card: %.2f%% \n", oddPerCard * 100);
     }
@@ -141,6 +173,7 @@ public class Main {
         }
         InfectionCards retrievedCard = infectionDeck.get(infectionDeck.size()-1);
         retrievedCard.count.getAndIncrement();
+        retrievedCard.addCube(3, retrievedCard.color);
         infectionDeck.remove(retrievedCard);
         System.out.println("3 CUBES ON: " + retrievedCard);
         discardPile.add(retrievedCard);
@@ -153,7 +186,7 @@ public class Main {
         discardPile.clear();
     }
 
-    private void draw() throws InterruptedException {
+    private InfectionCards draw() throws InterruptedException {
         scanner.nextLine();
         InfectionCards retrievedCard = infectionDeck.get(0);
         retrievedCard.count.getAndIncrement();
@@ -163,6 +196,7 @@ public class Main {
         System.out.println("Card drawn: " + retrievedCard);
         discardPile.add(retrievedCard);
         infectionDeck.remove(retrievedCard);
+        return retrievedCard;
     }
 
     private void stats(){
@@ -217,5 +251,7 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+
     }
 }
