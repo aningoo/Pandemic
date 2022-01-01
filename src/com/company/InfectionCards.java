@@ -85,6 +85,7 @@ public enum InfectionCards {
                 this.outbreak();
             }
         } else {
+            //todo commentje
             this.outbreak();
         }
     }
@@ -112,8 +113,8 @@ public enum InfectionCards {
     public void outbreak() {
         outbreakShield = true;
         Main.outbreakCounter++;
-        System.err.println("### OUTBREAK DETECTED ###");
-        System.err.println("OUTBREAK COUNTER: " + Main.outbreakCounter);
+        System.err.printf("### OUTBREAK DETECTED ON %s ### \n", this.cityName);
+        System.err.printf("### OUTBREAK COUNTER: %d ### \n", Main.outbreakCounter);
         for (InfectionCards neighbour : neighbours) {
             if (!neighbour.outbreakShield) {
                 neighbour.addCube(1, this.color);

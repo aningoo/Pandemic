@@ -66,6 +66,7 @@ public class Main {
             main.discardPile.forEach(discardedCards -> discardedCards.outbreakShield = false);
 
             if (outbreakCounter >= 8) {
+                System.err.println(Constants.youLoseText);
                 main.activeGame = false;
                 main.end();
                 break;
@@ -114,7 +115,10 @@ public class Main {
                         InfectionCards drawnCard1 = main.draw();
                         drawnCard1.addCube(1, drawnCard1.color);
                     }
+                    System.out.println("\n");
                     System.out.println("##### END OF TURN: " + main.turnCounter + " #####");
+                    main.drawEndOfTurnLine();
+                    main.calculate();
                     main.turnCounter++;
                     break;
                 case "1":
@@ -125,9 +129,17 @@ public class Main {
                     main.activeGame=false;
             }
 
-            main.calculate();
 
         }
+    }
+
+    private void drawEndOfTurnLine(){
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
     }
 
     private void analysis() {
