@@ -76,6 +76,7 @@ public enum InfectionCards {
             // 2
             for (int added = 0; added<amount; added++){
                 cubes.add(new Cube(color));;
+                System.out.printf("Add %s cubes on: %s \n", color, this.cityName);
             }
 
             if (countCubesOfColor(color) > 3) {
@@ -98,6 +99,9 @@ public enum InfectionCards {
                 for (Cube cube : cubes) {
                     if (cube.color.equals(color)) {
                         cubes.remove(cube);
+                        System.out.printf("Removing %d cubes from %s \n", amount, this.cityName);
+                        System.out.printf("Total cubes on %s is: %d",this.cityName, this.cubes.size());
+
                         break;
                     }
                 }
@@ -108,7 +112,8 @@ public enum InfectionCards {
     public void outbreak() {
         outbreakShield = true;
         Main.outbreakCounter++;
-
+        System.err.println("### OUTBREAK DETECTED ###");
+        System.err.println("OUTBREAK COUNTER: " + Main.outbreakCounter);
         for (InfectionCards neighbour : neighbours) {
             if (!neighbour.outbreakShield) {
                 neighbour.addCube(1, this.color);

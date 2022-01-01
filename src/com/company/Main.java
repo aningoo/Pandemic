@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 public class Main {
 
@@ -57,7 +58,8 @@ public class Main {
         main.startTime = LocalDateTime.now();
 
         while(main.activeGame) {
-            main.analysis();
+            //todo fix analysis
+//            main.analysis();
 
             //remove outbreak shield
             main.infectionDeck.forEach(infectionCards -> infectionCards.outbreakShield = false);
@@ -103,7 +105,6 @@ public class Main {
                     } catch (IllegalArgumentException e){
                         System.err.println("INVALID INPUT");
                     }
-                    //todo text cube removed
                     break;
                 case "p":
                     main.epidemic();
@@ -130,7 +131,28 @@ public class Main {
     }
 
     private void analysis() {
+        ArrayList<InfectionCards> analysisList = new ArrayList<>();
+        for (InfectionCards infectionCard : infectionDeck) {
+            if (infectionCard.cubes.stream().filter(cube -> cube.color == infectionCard.color).toList().size() == 3) {
+                analysisList.add(infectionCard);
+            }
+        }
 
+        for (InfectionCards infectionCards: analysisList){
+           List<InfectionCards> x= (List<InfectionCards>) infectionCards.neighbours.clone();
+           ArrayList<Cube> copyCubes = new ArrayList<Cube>(x.get(0).cubes);
+
+
+            System.out.println("");
+          // x.stream().filter(neighbour -> neighbour.cubes.)
+        };
+    }
+
+    private Predicate<InfectionCards> hasThreeCubes(){
+        return infectionCards -> infectionCards.cubes.size()==3;
+    }
+
+    private void checkNeighbours() {
 
     }
 
