@@ -46,6 +46,13 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         Main main = new Main();
+        InitNeighbours init = new InitNeighbours();
+        init.init();
+
+        InfectionCards.BAG.neighbours.get(0).count.getAndIncrement();
+        InfectionCards.MUM.neighbours.get(0).count.getAndIncrement();
+        System.out.println(InfectionCards.KAR.count);
+
         Collections.shuffle(main.infectionDeck);
         System.out.println("### SETUP PHASE PANDEMIC ###");
 

@@ -1,66 +1,68 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public enum InfectionCards {
-    ATL("ATLANTA", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    ALG("ALGIERS", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    BAN("BANGKOK", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    BOG("BOGOTA", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    BAG("BAGHDAD", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    BEI("BEIJING", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    BUE("BUENOS AIRES", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    CHI("CHICAGO", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    CAI("CAIRO", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    CHE("CHENNAI", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    DEL("DELHI", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    LOS("LOS ANGELES", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    LAG("LAGOS", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    LON("LONDON", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    LIM("LIMA", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    MAD("MADRID", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    MIL("MILAN", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    MON("MONTREAL", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    MOS("MOSCOW", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    MUM("MUMBAI", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    MIA("MIAMI", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    MAN("MANILLA", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    MEX("MEXICO CITY", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    IST("ISTANBUL", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    HOC("HO CHI MIN CITY", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    HON("HONG KONG", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    TAI("TAIPEI", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    TEH("TEHRAN", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    TOK("TOKIO", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    OSA("OSAKA", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    PAR("PARIS", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    SYD("SYDNEY", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    SHA("SHANGHAI", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    STP("ST. PETERSBURG", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    SEO("SEOUL", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    SANT("SANTIAGO", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    SANF("SAN FRANSISCO", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    SAO("SAO PAOLO", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    NEW("NEW YORK", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    KOL("KOLKATA", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    KHA("KHARTOUM", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    KIN("KINSHASA", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    ESS("ESSEN", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0)),
-    JAK("JAKARTA", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0)),
-    JOH("JOHANNESBURG", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0)),
-    KAR("KARACHI", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    RIY("RIYADH", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0)),
-    WAS("WASHINGTON", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0));
+    ATL("ATLANTA", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    ALG("ALGIERS", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    BAN("BANGKOK", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    BOG("BOGOTA", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    BAG("BAGHDAD", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    BEI("BEIJING", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    BUE("BUENOS AIRES", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    CHI("CHICAGO", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    CAI("CAIRO", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    CHE("CHENNAI", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    DEL("DELHI", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    LOS("LOS ANGELES", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    LAG("LAGOS", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    LON("LONDON", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    LIM("LIMA", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    MAD("MADRID", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    MIL("MILAN", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    MON("MONTREAL", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    MOS("MOSCOW", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    MUM("MUMBAI", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    MIA("MIAMI", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    MAN("MANILLA", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    MEX("MEXICO CITY", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    IST("ISTANBUL", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    HOC("HO CHI MIN CITY", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    HON("HONG KONG", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    TAI("TAIPEI", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    TEH("TEHRAN", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    TOK("TOKIO", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    OSA("OSAKA", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    PAR("PARIS", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    SYD("SYDNEY", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    SHA("SHANGHAI", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    STP("ST. PETERSBURG", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    SEO("SEOUL", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    SANT("SANTIAGO", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    SANF("SAN FRANSISCO", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    SAO("SAO PAOLO", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    NEW("NEW YORK", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    KOL("KOLKATA", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    KHA("KHARTOUM", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    KIN("KINSHASA", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    ESS("ESSEN", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    JAK("JAKARTA", Main.TEXT_RED + "RED" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    JOH("JOHANNESBURG", Main.TEXT_YELLOW + "YELLOW" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    KAR("KARACHI", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    RIY("RIYADH", Main.TEXT_BLACK + "BLACK" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>()),
+    WAS("WASHINGTON", Main.TEXT_BLUE + "BLUE" + Main.TEXT_RESET, new AtomicInteger(0), new ArrayList<>());
 
     public final String cityName;
     public final String color;
     public final AtomicInteger count;
+    public final ArrayList<InfectionCards> neighbours;
 
-
-    InfectionCards(String cityName, String color, AtomicInteger count) {
+    InfectionCards(String cityName, String color, AtomicInteger count, ArrayList<InfectionCards> neighbours) {
         this.cityName = cityName;
         this.color = color;
         this.count = count;
+        this.neighbours = neighbours;
     }
 
     @Override
