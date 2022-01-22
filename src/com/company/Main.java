@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -41,6 +42,17 @@ public class Main {
         InitNeighbours init = new InitNeighbours();
         init.init();
 
+        System.out.println("Enter number of players:");
+        String numberOfPlayers = main.scanner.nextLine();
+
+        System.out.println("### START CHARACTER SELECTION ###");
+        Collections.shuffle(Constants.inTheLabCharacters);
+
+        for (int players = 0; players < Integer.parseInt(numberOfPlayers); players++){
+            System.out.println(Constants.inTheLabCharacters.get(players));
+        }
+        System.out.println("### END CHARACTER SELECTION ### \n");
+
         Collections.shuffle(main.infectionDeck);
         System.out.println("### SETUP PHASE PANDEMIC ###");
 
@@ -58,8 +70,7 @@ public class Main {
         main.startTime = LocalDateTime.now();
 
         while(main.activeGame) {
-            //todo fix analysis
-//            main.analysis();
+            main.analysis();
 
             //remove outbreak shield
             main.infectionDeck.forEach(infectionCards -> infectionCards.outbreakShield = false);
@@ -90,17 +101,40 @@ public class Main {
                     break;
                 case "r":
                     try {
-                        System.out.println("Enter city code:");
+                        List<InfectionCards> tempRemovalList = new ArrayList();
+                        List<InfectionCards> x = main.infectionDeck.stream().filter(infectionCards -> infectionCards.cubes.size()>0).collect(
+                            Collectors.toList());
+                        List<InfectionCards> y = main.discardPile.stream().filter(infectionCards -> infectionCards.cubes.size()>0).collect(
+                            Collectors.toList());
+
+                        tempRemovalList.addAll(x);
+                        tempRemovalList.addAll(y);
+                        Collections.shuffle(tempRemovalList);
+                        int count = 0;
+                        for(InfectionCards card: tempRemovalList){
+                            System.out.println(count+" " + card.toString());
+                            count++;
+                        }
+
+                        System.out.println("Enter city digit:");
                         String cityCode2 = main.scanner.nextLine();
+
+                        System.out.println("How many cubes of a color:");
+                        String quantityCubes = main.scanner.nextLine();
+                        if (quantityCubes.isBlank()){
+                            quantityCubes = "1";
+                        }
+
                         System.out.println("Enter color of cube:");
                         String color = main.scanner.nextLine();
 
-                        InfectionCards retrieved=InfectionCards.valueOf(cityCode2.toUpperCase());
+                        InfectionCards retrieved= tempRemovalList.get(Integer.parseInt(cityCode2));
                         if (color.isBlank()){
-                            retrieved.removeCube(1, retrieved.color);
+                                retrieved.removeCube(Integer.parseInt(quantityCubes), retrieved.color);
                         } else {
-                            String retrievedColor = Constants.getColor(color);
-                            retrieved.removeCube(1, retrievedColor);
+                                String retrievedColor = Constants.getColor(color);
+                                retrieved.removeCube(Integer.parseInt(quantityCubes), retrievedColor);
+
                         }
 
                     } catch (IllegalArgumentException e){
@@ -114,6 +148,9 @@ public class Main {
                     for (int drawn = 0; drawn < main.infectionRate; drawn++) {
                         InfectionCards drawnCard1 = main.draw();
                         drawnCard1.addCube(1, drawnCard1.color);
+                        //remove outbreak shield
+                        main.infectionDeck.forEach(infectionCards -> infectionCards.outbreakShield = false);
+                        main.discardPile.forEach(discardedCards -> discardedCards.outbreakShield = false);
                     }
                     System.out.println("\n");
                     System.out.println("##### END OF TURN: " + main.turnCounter + " #####");
@@ -143,30 +180,21 @@ public class Main {
     }
 
     private void analysis() {
-        ArrayList<InfectionCards> analysisList = new ArrayList<>();
-        for (InfectionCards infectionCard : infectionDeck) {
-            if (infectionCard.cubes.stream().filter(cube -> cube.color == infectionCard.color).toList().size() == 3) {
-                analysisList.add(infectionCard);
-            }
-        }
+        System.out.println("\n ### START ANALYSIS ###");
+        System.out.println("Potential outbreak");
+        infectionDeck.stream().filter(infectionCards -> infectionCards.cubes.stream()
+            .filter(cube -> cube.color.equals(infectionCards.color)).count() ==3).forEach(System.out::println);
 
-        for (InfectionCards infectionCards: analysisList){
-           List<InfectionCards> x= (List<InfectionCards>) infectionCards.neighbours.clone();
-           ArrayList<Cube> copyCubes = new ArrayList<Cube>(x.get(0).cubes);
+        System.out.println("\nPotential bombs");
+        infectionDeck.stream().filter(infectionCards -> infectionCards.cubes.stream()
+            .filter(cube -> cube.color.equals(infectionCards.color)).count() >0).filter(infectionCards -> infectionCards.count.get() ==0).forEach(System.out::println);
 
+        System.out.println("### END ANALYSIS ### \n");
 
-            System.out.println("");
-          // x.stream().filter(neighbour -> neighbour.cubes.)
-        };
-    }
-
-    private Predicate<InfectionCards> hasThreeCubes(){
-        return infectionCards -> infectionCards.cubes.size()==3;
-    }
-
-    private void checkNeighbours() {
+        //number of chainreactions
 
     }
+
 
     private void calculate(){
         calculatePile=new ArrayList<>();
