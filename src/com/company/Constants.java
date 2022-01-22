@@ -1,6 +1,25 @@
 package com.company;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Constants {
+
+    //In the lab characters
+    public static final List<String> inTheLabCharacters = Arrays.asList(
+        "Medic",
+        "Quarantine specialist",
+        "Contingency planner",
+        "Scientist",
+        "Dispatcher",
+        "Operations Expert",
+        "Researcher",
+        "Field director",
+        "Virologist",
+        "Local liaison",
+        "Pilot");
 
     public static final String TEXT_RESET = "\u001B[0m";
     public static final String TEXT_BLACK = "\u001B[30m";
