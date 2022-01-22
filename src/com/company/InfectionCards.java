@@ -73,7 +73,7 @@ public enum InfectionCards {
     public void addCube(int amount, String color) {
         if (countCubesOfColor(color) < 3) {
 
-            // 2
+
             for (int added = 0; added<amount; added++){
                 cubes.add(new Cube(color));;
                 System.out.printf("Add %s cubes on: %s \n", color, this.cityName);
@@ -101,7 +101,7 @@ public enum InfectionCards {
                     if (cube.color.equals(color)) {
                         cubes.remove(cube);
                         System.out.printf("Removing %d cubes from %s \n", amount, this.cityName);
-                        System.out.printf("Total cubes on %s is: %d",this.cityName, this.cubes.size());
+                        System.out.printf("Total cubes on %s is: %d \n",this.cityName, this.cubes.size());
 
                         break;
                     }
@@ -127,7 +127,7 @@ public enum InfectionCards {
         return "{" +
                 "cityName='" + cityName + '\'' +
                 ", color='" + color + '\'' +
-                ", count='" + count + '\'' +
+                ", cubes='" + cubes.size() + '\'' +
                 '}';
     }
     public String toStringClean() {
